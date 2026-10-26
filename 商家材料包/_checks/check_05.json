@@ -1,0 +1,26 @@
+{
+  "format": "xlsx",
+  "verdict": "pass",
+  "checks": [
+    {
+      "id": "package",
+      "status": "pass"
+    },
+    {
+      "id": "count",
+      "status": "pass",
+      "expected": 1,
+      "actual": 1
+    }
+  ],
+  "summary": {
+    "sheets": [
+      {
+        "name": "ERP\u4f9b\u5e94\u5546\u4fe1\u606f",
+        "cells": 84,
+        "formulas": 0
+      }
+    ],
+    "formulas_evaluated": false
+  }
+}

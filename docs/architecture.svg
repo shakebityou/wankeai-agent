@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="880" viewBox="0 0 1180 880" font-family="'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7c"/>
+    </marker>
+    <style>
+      .box{stroke-width:1.5;rx:8}
+      .t-title{font-size:15px;font-weight:700;fill:#fff}
+      .t-sub{font-size:11px;fill:#e8eef4}
+      .t-body{font-size:12px;fill:#25313d}
+      .t-small{font-size:10.5px;fill:#5b6b7c}
+      .t-label{font-size:11px;fill:#5b6b7c;font-weight:600}
+      .lane{fill:#f4f7fa;stroke:#d9e2ec;stroke-width:1;rx:6}
+      .lane-t{font-size:12px;font-weight:700;fill:#93a5b8}
+    </style>
+  </defs>
+
+  <rect width="1180" height="880" fill="#fff"/>
+
+  <!-- 标题 -->
+  <text x="32" y="38" font-size="20" font-weight="700" fill="#1f2a36">玩可爱智能客服 Agent · 系统总体架构</text>
+  <text x="32" y="60" font-size="12" fill="#7b8a99">前端 Vue 3 经 nginx 反代到 BFF 单一入口；对话链路全部在后端编排层完成，外部依赖均可容器化</text>
+
+  <!-- ===== 第一层：接入层 ===== -->
+  <rect class="lane" x="24" y="80" width="1132" height="92"/>
+  <text class="lane-t" x="38" y="102">① 接入层</text>
+
+  <rect class="box" x="220" y="94" width="200" height="64" fill="#4a7ebb" rx="8"/>
+  <text class="t-title" x="320" y="120" text-anchor="middle">商家回调 / 用户消息</text>
+  <text class="t-sub" x="320" y="140" text-anchor="middle">Webhook · 签名校验 · 幂等去重</text>
+
+  <rect class="box" x="470" y="94" width="200" height="64" fill="#4a7ebb" rx="8"/>
+  <text class="t-title" x="570" y="120" text-anchor="middle">坐席 / 运营桌面端</text>
+  <text class="t-sub" x="570" y="140" text-anchor="middle">Vue 3 工作台 + 运营后台</text>
+
+  <rect class="box" x="720" y="94" width="180" height="64" fill="#5d6d7e" rx="8"/>
+  <text class="t-title" x="810" y="120" text-anchor="middle">nginx</text>
+  <text class="t-sub" x="810" y="140" text-anchor="middle">静态资源 + /bff 反代</text>
+
+  <rect class="box" x="950" y="94" width="190" height="64" fill="#7a8fa6" rx="8"/>
+  <text class="t-title" x="1045" y="120" text-anchor="middle">合规硬约束</text>
+  <text class="t-sub" x="1045" y="140" text-anchor="middle">零外链 · 数据不出境</text>
+
+  <path d="M420,126 L468,126" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M670,126 L718,126" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+
+  <!-- ===== 第二层：BFF ===== -->
+  <rect class="lane" x="24" y="186" width="1132" height="112"/>
+  <text class="lane-t" x="38" y="208">② 后端接入（模块化单体）</text>
+
+  <rect class="box" x="220" y="200" width="330" height="84" fill="#2f6f4f" rx="8"/>
+  <text class="t-title" x="385" y="226" text-anchor="middle">BFF 统一入口 /bff/v1</text>
+  <text class="t-sub" x="385" y="246" text-anchor="middle">会话 · 知识库 · 指标 · 工单 · 账号体系（41 端点）</text>
+  <text class="t-sub" x="385" y="264" text-anchor="middle">JWT 鉴权 · RBAC 权限矩阵 · trace_id 全链路</text>
+
+  <rect class="box" x="585" y="200" width="260" height="84" fill="#2f6f4f" rx="8"/>
+  <text class="t-title" x="715" y="226" text-anchor="middle">回调接入层</text>
+  <text class="t-sub" x="715" y="246" text-anchor="middle">验签 · 解密 · 去重</text>
+  <text class="t-sub" x="715" y="264" text-anchor="middle">统一响应 {code,message,data}</text>
+
+  <rect class="box" x="880" y="200" width="260" height="84" fill="#8a6d3b" rx="8"/>
+  <text class="t-title" x="1010" y="226" text-anchor="middle">契约与错误码</text>
+  <text class="t-sub" x="1010" y="246" text-anchor="middle">Pydantic 2 双向对齐</text>
+  <text class="t-sub" x="1010" y="264" text-anchor="middle">前端类型由契约生成</text>
+
+  <path d="M810,126 L810,196" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M550,242 L583,242" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M845,242 L878,242" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+
+  <!-- ===== 第三层：对话编排 ===== -->
+  <rect class="lane" x="24" y="322" width="1132" height="230"/>
+  <text class="lane-t" x="38" y="344">③ 对话编排核心（一次请求的完整链路）</text>
+
+  <!-- 主链路 6 步 -->
+  <rect class="box" x="60" y="372" width="150" height="76" fill="#c26b2b" rx="8"/>
+  <text class="t-title" x="135" y="398" text-anchor="middle">多模态归一</text>
+  <text class="t-sub" x="135" y="418" text-anchor="middle">文字 / 语音 ASR</text>
+  <text class="t-sub" x="135" y="435" text-anchor="middle">图片 OCR</text>
+
+  <rect class="box" x="236" y="372" width="150" height="76" fill="#c26b2b" rx="8"/>
+  <text class="t-title" x="311" y="398" text-anchor="middle">会话状态</text>
+  <text class="t-sub" x="311" y="418" text-anchor="middle">上下文 · 槽位</text>
+  <text class="t-sub" x="311" y="435" text-anchor="middle">多轮记忆</text>
+
+  <rect class="box" x="412" y="372" width="150" height="76" fill="#c26b2b" rx="8"/>
+  <text class="t-title" x="487" y="398" text-anchor="middle">意图 + 情绪</text>
+  <text class="t-sub" x="487" y="418" text-anchor="middle">意图 85.8%</text>
+  <text class="t-sub" x="487" y="435" text-anchor="middle">情绪 75.0%</text>
+
+  <rect class="box" x="588" y="372" width="150" height="76" fill="#c26b2b" rx="8"/>
+  <text class="t-title" x="663" y="398" text-anchor="middle">动作决策</text>
+  <text class="t-sub" x="663" y="418" text-anchor="middle">查询 / 回复</text>
+  <text class="t-sub" x="663" y="435" text-anchor="middle">转人工判定</text>
+
+  <rect class="box" x="764" y="372" width="150" height="76" fill="#c26b2b" rx="8"/>
+  <text class="t-title" x="839" y="398" text-anchor="middle">工具层</text>
+  <text class="t-sub" x="839" y="418" text-anchor="middle">订单/物流/库存/商品</text>
+  <text class="t-sub" x="839" y="435" text-anchor="middle">越权校验</text>
+
+  <rect class="box" x="940" y="372" width="180" height="76" fill="#b0413e" rx="8"/>
+  <text class="t-title" x="1030" y="398" text-anchor="middle">三道闸 + 出站合规</text>
+  <text class="t-sub" x="1030" y="418" text-anchor="middle">≤120 字 · 零链接</text>
+  <text class="t-sub" x="1030" y="435" text-anchor="middle">卡片恒空</text>
+
+  <path d="M210,410 L234,410" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M386,410 L410,410" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M562,410 L586,410" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M738,410 L762,410" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M914,410 L938,410" stroke="#5b6b7c" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+
+  <!-- 分支：RAG / 转人工 / LLM -->
+  <rect class="box" x="236" y="468" width="326" height="66" fill="#3d6f8e" rx="8"/>
+  <text class="t-title" x="399" y="492" text-anchor="middle">RAG 六步混合检索</text>
+  <text class="t-sub" x="399" y="510" text-anchor="middle">Milvus 向量 + ES 关键词双路融合 · Recall@5 100% · P95 11–23ms</text>
+
+  <rect class="box" x="588" y="468" width="230" height="66" fill="#6d5a8c" rx="8"/>
+  <text class="t-title" x="703" y="492" text-anchor="middle">LLM 网关</text>
+  <text class="t-sub" x="703" y="510" text-anchor="middle">主备切换 · 缓存 · Top-3 · 预算告警</text>
+
+  <rect class="box" x="844" y="468" width="276" height="66" fill="#8c5a5a" rx="8"/>
+  <text class="t-title" x="982" y="492" text-anchor="middle">转人工 / 工单</text>
+  <text class="t-sub" x="982" y="510" text-anchor="middle">规则命中建单 · 排班 · 离线兜底</text>
+
+  <path d="M487,448 L399,466" stroke="#5b6b7c" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)" fill="none"/>
+  <path d="M663,448 L690,466" stroke="#5b6b7c" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)" fill="none"/>
+  <path d="M839,448 L950,466" stroke="#5b6b7c" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)" fill="none"/>
+
+  <!-- ===== 第四层：数据与外部依赖 ===== -->
+  <rect class="lane" x="24" y="566" width="1132" height="150"/>
+  <text class="lane-t" x="38" y="588">④ 存储层与外部依赖（docker compose --profile core 一键起 8 个容器）</text>
+
+  <rect class="box" x="60" y="604" width="170" height="56" fill="#3f6b52" rx="8"/>
+  <text class="t-title" x="145" y="628" text-anchor="middle">PostgreSQL 14</text>
+  <text class="t-sub" x="145" y="646" text-anchor="middle">18 表 / 6 迁移版本</text>
+
+  <rect class="box" x="246" y="604" width="170" height="56" fill="#3f6b52" rx="8"/>
+  <text class="t-title" x="331" y="628" text-anchor="middle">Milvus + etcd</text>
+  <text class="t-sub" x="331" y="646" text-anchor="middle">向量检索</text>
+
+  <rect class="box" x="432" y="604" width="150" height="56" fill="#3f6b52" rx="8"/>
+  <text class="t-title" x="507" y="628" text-anchor="middle">Elasticsearch</text>
+  <text class="t-sub" x="507" y="646" text-anchor="middle">关键词检索</text>
+
+  <rect class="box" x="598" y="604" width="150" height="56" fill="#3f6b52" rx="8"/>
+  <text class="t-title" x="673" y="628" text-anchor="middle">Redis 7</text>
+  <text class="t-sub" x="673" y="646" text-anchor="middle">会话缓存</text>
+
+  <rect class="box" x="764" y="604" width="150" height="56" fill="#3f6b52" rx="8"/>
+  <text class="t-title" x="839" y="628" text-anchor="middle">MinIO</text>
+  <text class="t-sub" x="839" y="646" text-anchor="middle">语音/图片对象</text>
+
+  <rect class="box" x="930" y="604" width="190" height="56" fill="#7b6236" rx="8"/>
+  <text class="t-title" x="1025" y="628" text-anchor="middle">商家 6 个接口</text>
+  <text class="t-sub" x="1025" y="646" text-anchor="middle">当前 Mock，待开测试环境</text>
+
+  <!-- 观测 -->
+  <rect class="box" x="246" y="676" width="666" height="30" fill="#8a94a0" rx="6"/>
+  <text x="579" y="696" text-anchor="middle" font-size="11" fill="#fff">可观测：Prometheus + Grafana + Loki（obs profile）· 每次请求 trace_id 落表可回放</text>
+
+  <!-- ===== 第五层：质量 ===== -->
+  <rect class="lane" x="24" y="734" width="1132" height="118"/>
+  <text class="lane-t" x="38" y="756">⑤ 质量与交付</text>
+
+  <rect class="box" x="60" y="770" width="250" height="66" fill="#55606c" rx="8"/>
+  <text class="t-title" x="185" y="795" text-anchor="middle">后端单测 1111 项</text>
+  <text class="t-sub" x="185" y="814" text-anchor="middle">覆盖率 78.74%（门槛 70%）</text>
+  <text class="t-sub" x="185" y="830" text-anchor="middle">编排关键路径 94%</text>
+
+  <rect class="box" x="330" y="770" width="250" height="66" fill="#55606c" rx="8"/>
+  <text class="t-title" x="455" y="795" text-anchor="middle">自检脚本 13 个</text>
+  <text class="t-sub" x="455" y="814" text-anchor="middle">scripts/check_*.py 全绿</text>
+  <text class="t-sub" x="455" y="830" text-anchor="middle">契约 / 数据库 / 合规各一道</text>
+
+  <rect class="box" x="600" y="770" width="250" height="66" fill="#55606c" rx="8"/>
+  <text class="t-title" x="725" y="795" text-anchor="middle">端到端冒烟 19 项</text>
+  <text class="t-sub" x="725" y="814" text-anchor="middle">smoke_e2e.py 19/19 PASS</text>
+  <text class="t-sub" x="725" y="830" text-anchor="middle">真容器里跑真实链路</text>
+
+  <rect class="box" x="870" y="770" width="250" height="66" fill="#55606c" rx="8"/>
+  <text class="t-title" x="995" y="795" text-anchor="middle">一键部署</text>
+  <text class="t-sub" x="995" y="814" text-anchor="middle">8 容器全 healthy</text>
+  <text class="t-sub" x="995" y="830" text-anchor="middle">镜像源可按环境切换</text>
+</svg>

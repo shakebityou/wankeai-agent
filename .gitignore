@@ -1,0 +1,77 @@
+# ==============================================================================
+# 玩可爱智能客服 Agent · 仓库根忽略规则
+# 子目录另有 backend/.gitignore、frontend/.gitignore，这里是根级兜底。
+# ==============================================================================
+
+# --- 密钥：绝不入库 ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+secrets/
+secrets.*.json
+
+# --- 本地缓存与工作区（体积大且可再生） ---
+.npm-cache/
+.pytest-work/
+.pytest-tmp*/
+_parts/
+
+# --- 依赖与构建产物 ---
+node_modules/
+dist/
+dist-ssr/
+dist-package/
+.vite/
+.pytest_cache/
+.pytest-work/
+.pytest-tmp*/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# --- 本地运行时数据 ---
+.local/
+.docker-volumes/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.npy
+records.jsonl
+logs/
+*.log
+
+# --- 大体积原始素材（保留 商家材料包/docs 与 data 之外的内容） ---
+*.zip
+*.7z
+*.tar.gz
+商家材料包/data/*.pdf
+商家材料包/data/*.xlsx
+商家材料包/data/*.docx
+
+# --- 会话/工具产物 ---
+.dsh-update/
+.dsh_context_*.md
+_parts/
+.zz-*/
+_checks/*.tmp
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

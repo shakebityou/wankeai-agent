@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wkagent-backend"
+version = "1.0.0"
+description = "玩可爱智能客服 Agent · 后端（模块化单体）"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+
+# 运行时依赖以 requirements.txt 为唯一口径（部署层直接读它）。
+# 此处只声明包元信息，避免两处版本漂移。
+dependencies = []
+
+[tool.setuptools]
+packages = ["app"]
+
+# ==============================================================================
+# pytest（DoD：单测覆盖率 ≥ 70%，关键路径 ≥ 85%）
+# ==============================================================================
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = [
+    "-q",
+    "--strict-markers",
+    "--strict-config",
+    # 覆盖率门槛：全局 70%，关键路径在 CI 里单独用 --cov-fail-under=85 跑
+    "--cov=app",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=xml:coverage.xml",
+    "--cov-report=html:htmlcov",
+    "--cov-fail-under=70",
+]
+asyncio_mode = "auto"
+markers = [
+    "unit: 单元测试（无外部依赖，必须能在 CI 全绿）",
+    "contract: 契约测试（校验 schemas 与任务书第 2 章一致）",
+    "db: 数据库 Schema 与迁移测试（SQLite 零依赖；SQL Server 走 check_db_schema.py）",
+    "compliance: 合规红线测试（HC-1/HC-2/HC-3）",
+    "integration: 集成测试（需 Redis/PG/Milvus/ES，默认跳过）",
+    "e2e: 端到端测试（需完整 compose 栈）",
+    "slow: 慢用例（> 1s）",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:starlette.*",
+    "ignore::DeprecationWarning:fastapi.*",
+    # 本机 Python 3.12 + 未装 opentelemetry 时的告警
+    "ignore::UserWarning:app.*",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["app"]
+omit = [
+    "app/main.py",              # ASGI 入口，由 e2e 覆盖
+    "*/__init__.py",
+    "app/adapters/*",           # 适配器由 probe_*.py 与 integration 覆盖
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@(abc\\.)?abstractmethod",
+    "class .*\\(Protocol\\):",
+]
+
+# ==============================================================================
+# ruff（代码规范；CI 里跑 `ruff check app tests`）
+# ==============================================================================
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["app", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort
+    "B",        # bugbear
+    "UP",       # pyupgrade
+    "SIM",      # simplify
+    "C4",       # comprehensions
+    "RUF",      # ruff 自有规则
+]
+ignore = [
+    "E501",     # 行长由 formatter 处理
+    "B008",     # FastAPI 的 Depends() 默认参数是标准用法
+    "RUF001", "RUF002", "RUF003",  # 中文全角标点在 docstring/注释里是刻意的
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "E402"]
+"scripts/**" = ["E402", "T201"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]

@@ -1,0 +1,361 @@
+@use './tokens' as *;
+
+// ─────────────────────────────────────────────────────────────
+// 全局样式：重置 + Element Plus 主题覆写 + 通用原子类
+// ─────────────────────────────────────────────────────────────
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: $font-sans;
+  font-size: $text-base;
+  line-height: 1.6;
+  color: $ink-900;
+  background: $ink-50;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 600;
+  color: $ink-900;
+  line-height: 1.35;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  // HC-1：全局不渲染任何可点击外链，链接样式仅用于同源路由跳转。
+  color: $brand-ink;
+  text-decoration: none;
+}
+
+code,
+kbd,
+pre {
+  font-family: $font-mono;
+}
+
+.boot-splash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: $ink-500;
+  font-size: $text-md;
+}
+
+// ── 滚动条：细、暖灰、不抢视线 ───────────────────────────────
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $ink-300;
+  border-radius: $radius-pill;
+
+  &:hover {
+    background: $ink-400;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Element Plus 主题覆写
+// 采用 CSS 变量覆写而非 SCSS 主题编译：避免引入 element-plus 内部
+// SCSS 依赖链（体积与构建时长），同时保证组件与自研样式同源同色。
+// ─────────────────────────────────────────────────────────────
+:root {
+  --el-color-primary: #{$brand-500};
+  --el-color-primary-light-3: #{$brand-300};
+  --el-color-primary-light-5: #{$brand-200};
+  --el-color-primary-light-7: #{$brand-100};
+  --el-color-primary-light-8: #{$brand-50};
+  --el-color-primary-light-9: #{$brand-50};
+  --el-color-primary-dark-2: #{$brand-600};
+
+  --el-color-success: #{$success-500};
+  --el-color-warning: #{$warning-500};
+  --el-color-danger: #{$danger-500};
+  --el-color-error: #{$danger-500};
+  --el-color-info: #{$ink-500};
+
+  --el-text-color-primary: #{$ink-900};
+  --el-text-color-regular: #{$ink-700};
+  --el-text-color-secondary: #{$ink-600};
+  --el-text-color-placeholder: #{$ink-400};
+
+  --el-border-color: #{$ink-200};
+  --el-border-color-light: #{$ink-150};
+  --el-border-color-lighter: #{$ink-100};
+  --el-fill-color-blank: #{$surface};
+  --el-fill-color-light: #{$ink-100};
+  --el-bg-color: #{$surface};
+  --el-bg-color-page: #{$ink-50};
+
+  --el-border-radius-base: #{$radius-sm};
+  --el-border-radius-small: #{$radius-xs};
+  --el-font-size-base: #{$text-base};
+
+  --el-box-shadow-light: #{$shadow-sm};
+  --el-box-shadow: #{$shadow-md};
+}
+
+// 表格：坐席台与知识库都是密集表格，行高压到舒适但不浪费
+.el-table {
+  --el-table-border-color: #{$ink-150};
+  --el-table-header-bg-color: #{$surface-sunken};
+  --el-table-header-text-color: #{$ink-600};
+  --el-table-row-hover-bg-color: #{$brand-50};
+  font-size: $text-sm;
+
+  th.el-table__cell {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+}
+
+.el-button {
+  font-weight: 500;
+}
+
+.el-tag {
+  font-weight: 500;
+}
+
+.el-card {
+  --el-card-border-color: #{$ink-200};
+  --el-card-border-radius: #{$radius-md};
+}
+
+.el-drawer__header {
+  margin-bottom: $space-4;
+  padding-bottom: $space-3;
+  border-bottom: 1px solid $ink-150;
+  font-weight: 600;
+  color: $ink-900;
+}
+
+.el-dialog {
+  border-radius: $radius-lg;
+}
+
+.el-descriptions__label {
+  color: $ink-600 !important;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 通用原子类
+// ─────────────────────────────────────────────────────────────
+.wk-page {
+  padding: $space-6;
+  min-height: 100%;
+}
+
+.wk-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-4;
+  margin-bottom: $space-5;
+}
+
+.wk-page__title {
+  font-size: $text-xl;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.wk-page__subtitle {
+  margin-top: $space-1;
+  font-size: $text-sm;
+  color: $ink-600;
+}
+
+.wk-card {
+  background: $surface;
+  border: 1px solid $ink-200;
+  border-radius: $radius-md;
+  box-shadow: $shadow-xs;
+}
+
+.wk-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border-bottom: 1px solid $ink-150;
+}
+
+.wk-card__title {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $text-md;
+  font-weight: 600;
+}
+
+.wk-card__body {
+  padding: $space-4;
+}
+
+.wk-muted {
+  color: $ink-600;
+}
+
+.wk-dim {
+  color: $ink-500;
+}
+
+.wk-mono {
+  font-family: $font-mono;
+  font-size: $text-xs;
+}
+
+.wk-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.wk-col {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.wk-spacer {
+  flex: 1;
+}
+
+.wk-label {
+  font-size: $text-xs;
+  color: $ink-500;
+  letter-spacing: 0.02em;
+}
+
+.wk-divider {
+  height: 1px;
+  background: $ink-150;
+  border: 0;
+  margin: $space-3 0;
+}
+
+// 三态语义胶囊（指标卡、渠道状态、规则开关共用）
+.wk-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: 1px $space-2;
+  border-radius: $radius-pill;
+  font-size: $text-xs;
+  font-weight: 500;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+.wk-pill--ok {
+  color: $success-ink;
+  background: $success-bg;
+}
+
+.wk-pill--warn {
+  color: $warning-ink;
+  background: $warning-bg;
+}
+
+.wk-pill--bad {
+  color: $danger-ink;
+  background: $danger-bg;
+}
+
+.wk-pill--info {
+  color: $info-ink;
+  background: $info-bg;
+}
+
+.wk-pill--brand {
+  color: $brand-ink;
+  background: $brand-50;
+}
+
+.wk-pill--mint {
+  color: $mint-ink;
+  background: $mint-bg;
+}
+
+.wk-pill--neutral {
+  color: $ink-600;
+  background: $ink-100;
+}
+
+// 空态 / 错误态 / 加载态：任务书 4.6 要求三态齐备
+.wk-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  padding: $space-10 $space-6;
+  text-align: center;
+  color: $ink-500;
+}
+
+.wk-state__icon {
+  font-size: 34px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.wk-state__title {
+  font-size: $text-md;
+  font-weight: 600;
+  color: $ink-700;
+}
+
+.wk-state__desc {
+  max-width: 460px;
+  font-size: $text-sm;
+  line-height: 1.7;
+}
+
+// 骨架屏统一色（Element Plus 默认偏冷，改为暖灰）
+.el-skeleton {
+  --el-skeleton-color: #{$ink-100};
+  --el-skeleton-to-color: #{$ink-150};
+}
+
+// 打印/导出防护：任务书 4.5.2 要求回放与工单页「无导出功能」，
+// 这里额外阻断浏览器打印路径，避免绕过 UI 导出数据。
+@media print {
+  .wk-no-print {
+    display: none !important;
+  }
+}

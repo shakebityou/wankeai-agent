@@ -1,0 +1,17 @@
+# ==============================================================================
+# Grafana 看板自动加载（扫描 /etc/grafana/provisioning/dashboards/json 下的 JSON）
+# ==============================================================================
+
+apiVersion: 1
+
+providers:
+  - name: wkagent
+    orgId: 1
+    folder: "玩可爱客服 Agent"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/json
+      foldersFromFilesStructure: false

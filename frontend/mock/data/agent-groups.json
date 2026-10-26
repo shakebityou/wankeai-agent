@@ -1,0 +1,74 @@
+[
+  {
+    "group_id": "G1",
+    "group_name": "售前咨询组",
+    "service_scope": "商品咨询（规格/材质/洗护/适用年龄/价格）",
+    "agent_count": 12,
+    "supervisor": "李敏",
+    "online_window": "09:00–22:00",
+    "channels_raw": "淘宝、天猫、拼多多、抖音小店、微信客服",
+    "daily_volume": 1800,
+    "peak_volume": 3200,
+    "note": "大促期间扩编至 20 人"
+  },
+  {
+    "group_id": "G2",
+    "group_name": "订单物流组",
+    "service_scope": "订单状态、物流查询、改地址、催发货、取消订单",
+    "agent_count": 8,
+    "supervisor": "李敏",
+    "online_window": "09:00–21:00",
+    "channels_raw": "淘宝、天猫、拼多多、抖音小店",
+    "daily_volume": 1100,
+    "peak_volume": 2100,
+    "note": "与仓储物流组联动处理异常件"
+  },
+  {
+    "group_id": "G3",
+    "group_name": "售后服务组",
+    "service_scope": "退换货、质量问题、少发漏发、退款、发票",
+    "agent_count": 10,
+    "supervisor": "李敏",
+    "online_window": "09:00–21:00",
+    "channels_raw": "淘宝、天猫、拼多多、抖音小店、微信客服",
+    "daily_volume": 900,
+    "peak_volume": 1600,
+    "note": "需具备 A/B/C 瑕疵分级判定能力"
+  },
+  {
+    "group_id": "G4",
+    "group_name": "营销活动组",
+    "service_scope": "优惠券、满减、赠品、会员权益、大促玩法",
+    "agent_count": 6,
+    "supervisor": "陈静",
+    "online_window": "09:00–22:00",
+    "channels_raw": "淘宝、天猫、拼多多、抖音小店",
+    "daily_volume": 700,
+    "peak_volume": 2400,
+    "note": "大促期间峰值最高，需提前排班"
+  },
+  {
+    "group_id": "G5",
+    "group_name": "投诉与升级组",
+    "service_scope": "客诉、赔付、高风险工单、主管复核",
+    "agent_count": 5,
+    "supervisor": "李敏",
+    "online_window": "09:00–20:00",
+    "channels_raw": "全渠道",
+    "daily_volume": 200,
+    "peak_volume": 500,
+    "note": "承接转人工的高优先级工单，24 小时内复核"
+  },
+  {
+    "group_id": "G6",
+    "group_name": "品牌与信任组",
+    "service_scope": "是否正品、IP 授权、材质安全认证",
+    "agent_count": 3,
+    "supervisor": "周琳",
+    "online_window": "10:00–19:00",
+    "channels_raw": "全渠道",
+    "daily_volume": 150,
+    "peak_volume": 300,
+    "note": "由品牌部兼管，负责假一赔十口径"
+  }
+]

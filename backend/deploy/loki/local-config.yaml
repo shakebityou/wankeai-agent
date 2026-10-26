@@ -1,0 +1,69 @@
+# ==============================================================================
+# Loki 单机配置（任务书 3.1：OpenTelemetry + Prometheus + Grafana + Loki）
+# ------------------------------------------------------------------------------
+# 用途：集中收集应用结构化日志（JSON，含 trace_id），与 Prometheus 指标互补。
+# 日志由应用直接写 stdout（JsonFormatter），生产建议用 Promtail/Alloy 采集；
+# 本 compose 的 obs profile 只起 Loki 本体，供本地查看与告警联调。
+#
+# 保留策略 30 天：合规要求接口日志 ≥ 6 个月、写操作日志 ≥ 1 年，
+# **因此生产必须把 Loki 存储换成 OSS/对象存储并调整 retention**，
+# 本文件里的 30 天仅为本地开发默认值（见 6.5 上线检查项）。
+# ==============================================================================
+
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+  log_level: info
+
+common:
+  instance_addr: 127.0.0.1
+  path_prefix: /loki
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+limits_config:
+  retention_period: 720h          # 30 天（本地默认；生产改 8760h 并按合规分级）
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+  max_query_series: 5000
+  allow_structured_metadata: true
+  volume_enabled: true
+
+compactor:
+  working_directory: /loki/compactor
+  retention_enabled: true
+  delete_request_store: filesystem
+  compaction_interval: 10m
+
+ruler:
+  storage:
+    type: local
+    local:
+      directory: /loki/rules
+  rule_path: /loki/rules-temp
+  alertmanager_url: http://localhost:9093
+  ring:
+    kvstore:
+      store: inmemory
+  enable_api: true
+
+analytics:
+  reporting_enabled: false

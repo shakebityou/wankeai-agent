@@ -1,0 +1,44 @@
+{
+  "shots": [
+    {
+      "name": "01-login",
+      "note": "登录页",
+      "file": "D:\\learn\\homework\\agent\\frontend\\shots\\deploy\\01-login.png"
+    },
+    {
+      "name": "02-after-login",
+      "note": "登录后落地页",
+      "file": "D:\\learn\\homework\\agent\\frontend\\shots\\deploy\\02-after-login.png"
+    },
+    {
+      "name": "03-sessions",
+      "note": "会话工作台",
+      "file": "D:\\learn\\homework\\agent\\frontend\\shots\\deploy\\03-sessions.png"
+    },
+    {
+      "name": "04-kb",
+      "note": "知识库管理",
+      "file": "D:\\learn\\homework\\agent\\frontend\\shots\\deploy\\04-kb.png"
+    },
+    {
+      "name": "05-metrics",
+      "note": "指标看板",
+      "file": "D:\\learn\\homework\\agent\\frontend\\shots\\deploy\\05-metrics.png"
+    },
+    {
+      "name": "06-config",
+      "note": "配置页",
+      "file": "D:\\learn\\homework\\agent\\frontend\\shots\\deploy\\06-config.png"
+    },
+    {
+      "name": "07-tickets",
+      "note": "工单列表",
+      "file": "D:\\learn\\homework\\agent\\frontend\\shots\\deploy\\07-tickets.png"
+    }
+  ],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+  ]
+}

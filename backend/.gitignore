@@ -1,0 +1,65 @@
+# ==============================================================================
+# 玩可爱智能客服 Agent · 后端忽略规则
+# ==============================================================================
+
+# --- 密钥：**绝不入库**（商家《服务器与部署环境说明》4.1 密钥管理） ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+
+# --- 本地运行时产物 ---
+.local/
+.docker-volumes/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# --- 索引/媒体本地持久化 ---
+backend/.local/
+*.npy
+records.jsonl
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# --- 日志/导出 ---
+*.log
+logs/
+exports/
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- 测试临时目录（conftest 把 basetemp 固定到 .pytest-work）---
+.pytest-tmp*/
+.pytest-work/
+.zz-*/
+
+# --- 交付物中的临时件 ---
+_checks/*.tmp

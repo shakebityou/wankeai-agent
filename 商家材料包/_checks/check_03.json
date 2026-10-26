@@ -1,0 +1,36 @@
+{
+  "format": "xlsx",
+  "verdict": "pass",
+  "checks": [
+    {
+      "id": "package",
+      "status": "pass"
+    },
+    {
+      "id": "count",
+      "status": "pass",
+      "expected": 3,
+      "actual": 3
+    }
+  ],
+  "summary": {
+    "sheets": [
+      {
+        "name": "FAQ\u77e5\u8bc6\u5e93",
+        "cells": 889,
+        "formulas": 0
+      },
+      {
+        "name": "\u5546\u54c1\u77e5\u8bc6\u5361",
+        "cells": 1275,
+        "formulas": 0
+      },
+      {
+        "name": "\u5b57\u6bb5\u8bf4\u660e",
+        "cells": 36,
+        "formulas": 0
+      }
+    ],
+    "formulas_evaluated": false
+  }
+}

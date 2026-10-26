@@ -1,0 +1,271 @@
+C:\Users\dell\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\Lib\site-packages\PIL\Image.py:1136: UserWarning: Palette images with Transparency expressed in bytes should be converted to RGBA images
+  warnings.warn(
+
+[WK-ASTROABBIT] 1 个 SKU，需要 4 张  ← 检索: astronaut rabbit figure toy
+    候选: 60 张
+    下载可用: 10 张
+    [ 1/74] WK-ASTROABBIT-26 宇航兔搪胶 26cm
+
+[WK-BEAR] 4 个 SKU，需要 16 张  ← 检索: teddy bear plush toy
+    候选: 62 张
+    下载可用: 22 张
+    [ 2/74] WK-BEAR-20 奶油小熊 20cm
+    [ 3/74] WK-BEAR-30 奶油小熊 30cm
+    [ 4/74] WK-BEAR-40 奶油小熊 40cm
+    [ 5/74] WK-BEAR-50 奶油小熊 50cm
+
+[WK-BEARK] 2 个 SKU，需要 8 张  ← 检索: teddy bear keychain charm
+    候选: 59 张
+    下载可用: 14 张
+    [ 6/74] WK-BEARK-10 奶油小熊挂件 10cm
+    [ 7/74] WK-BEARK-15 奶油小熊挂件 15cm
+
+[WK-BEARP] 2 个 SKU，需要 8 张  ← 检索: teddy bear pillow cushion
+    候选: 65 张
+    下载可用: 14 张
+    [ 8/74] WK-BEARP-40 奶油小熊抱枕 40cm
+    [ 9/74] WK-BEARP-50 奶油小熊抱枕 50cm
+
+[WK-BLINDDESSERT] 2 个 SKU，需要 8 张  ← 检索: dessert toy figure blind box
+    候选: 78 张
+    下载可用: 14 张
+    [10/74] WK-BLINDDESSERT-C 甜品派对盲盒 端盒
+    [11/74] WK-BLINDDESSERT-S 甜品派对盲盒 单盒
+
+[WK-BLINDFOREST] 2 个 SKU，需要 8 张  ← 检索: forest animal figure toy
+    候选: 63 张
+    下载可用: 14 张
+    [12/74] WK-BLINDFOREST-C 森林物语盲盒 端盒
+    [13/74] WK-BLINDFOREST-S 森林物语盲盒 单盒
+
+[WK-BLINDPLANET] 2 个 SKU，需要 8 张  ← 检索: blind box toy figure
+    候选: 62 张
+    下载可用: 14 张
+    [14/74] WK-BLINDPLANET-C 玩偶星球盲盒 端盒
+    [15/74] WK-BLINDPLANET-S 玩偶星球盲盒 单盒
+
+[WK-BLINDSPACE] 2 个 SKU，需要 8 张  ← 检索: space toy figure blind box
+    候选: 76 张
+    下载可用: 14 张
+    [16/74] WK-BLINDSPACE-C 太空旅行盲盒 端盒
+    [17/74] WK-BLINDSPACE-S 太空旅行盲盒 单盒
+
+[WK-BURGER] 1 个 SKU，需要 4 张  ← 检索: plush burger toy
+    候选: 80 张
+    下载可用: 10 张
+    [18/74] WK-BURGER-10 小熊汉堡挂件 10cm
+
+[WK-CATP] 2 个 SKU，需要 8 张  ← 检索: cat plush pillow cushion
+    候选: 55 张
+    下载可用: 14 张
+    [19/74] WK-CATP-40 猫咪抱枕 40cm
+    [20/74] WK-CATP-55 猫咪抱枕 55cm
+
+[WK-CLOUDP] 1 个 SKU，需要 4 张  ← 检索: cloud shaped pillow cushion
+    候选: 60 张
+    下载可用: 10 张
+    [21/74] WK-CLOUDP-40 云朵造型抱枕 40cm
+
+[WK-CLOVER] 1 个 SKU，需要 4 张  ← 检索: four leaf clover keychain
+    候选: 63 张
+    下载可用: 10 张
+    [22/74] WK-CLOVER-8 幸运四叶草挂件 8cm
+
+[WK-CYBERSHIBA] 1 个 SKU，需要 4 张  ← 检索: cyberpunk dog figure toy
+    候选: 56 张
+    下载可用: 10 张
+    [23/74] WK-CYBERSHIBA-24 赛博柴犬搪胶 24cm
+
+[WK-DEEPSEAOCTO] 1 个 SKU，需要 4 张  ← 检索: octopus figure toy
+    候选: 78 张
+    下载可用: 10 张
+    [24/74] WK-DEEPSEAOCTO-21 深海章鱼搪胶 21cm
+
+[WK-DEER] 2 个 SKU，需要 8 张  ← 检索: plush deer stuffed animal
+    候选: 84 张
+    下载可用: 14 张
+    [25/74] WK-DEER-30 小鹿斑斑 30cm
+    [26/74] WK-DEER-45 小鹿斑斑 45cm
+
+[WK-DESSERTBEAR] 1 个 SKU，需要 4 张  ← 检索: dessert bear toy figure
+    候选: 76 张
+    下载可用: 10 张
+    [27/74] WK-DESSERTBEAR-16 甜品熊搪胶 16cm
+
+[WK-DINO] 3 个 SKU，需要 12 张  ← 检索: plush dinosaur stuffed animal
+    候选: 61 张
+    下载可用: 18 张
+    [28/74] WK-DINO-25 抹茶恐龙 25cm
+    [29/74] WK-DINO-35 抹茶恐龙 35cm
+    [30/74] WK-DINO-45 抹茶恐龙 45cm
+
+[WK-DINOK] 2 个 SKU，需要 8 张  ← 检索: dinosaur plush keychain
+    候选: 62 张
+    下载可用: 14 张
+    [31/74] WK-DINOK-12 抹茶恐龙挂件 12cm
+    [32/74] WK-DINOK-15 抹茶恐龙挂件 15cm
+
+[WK-DINOP] 1 个 SKU，需要 4 张  ← 检索: dinosaur plush cushion
+    候选: 59 张
+    下载可用: 10 张
+    [33/74] WK-DINOP-45 恐龙蛋抱枕 45cm
+
+[WK-ELEPHANT] 1 个 SKU，需要 4 张  ← 检索: elephant plush toy
+    候选: 81 张
+    下载可用: 10 张
+    [34/74] WK-ELEPHANT-40 大象嘟嘟 40cm
+
+[WK-FOX] 1 个 SKU，需要 4 张  ← 检索: fox plush toy
+    候选: 60 张
+    下载可用: 10 张
+    [35/74] WK-FOX-35 狐狸阿橘 35cm
+
+[WK-GARDENELF] 1 个 SKU，需要 4 张  ← 检索: elf figurine toy
+    候选: 65 张
+    下载可用: 10 张
+    [36/74] WK-GARDENELF-18 花园精灵搪胶 18cm
+
+[WK-MECHRAB] 1 个 SKU，需要 4 张  ← 检索: robot rabbit figure toy
+    候选: 59 张
+    下载可用: 10 张
+    [37/74] WK-MECHRAB-20 机械兔搪胶 20cm
+
+[WK-OCTO] 1 个 SKU，需要 4 张  ← 检索: octopus plush toy
+    候选: 83 张
+    下载可用: 10 张
+    [38/74] WK-OCTO-12 章鱼哥挂件 12cm
+
+[WK-OTTER] 1 个 SKU，需要 4 张  ← 检索: otter plush toy
+    候选: 70 张
+    下载可用: 10 张
+    [39/74] WK-OTTER-45 海獭抱抱 45cm
+
+[WK-PANDA] 2 个 SKU，需要 8 张  ← 检索: panda plush toy
+    候选: 81 张
+    下载可用: 14 张
+    [40/74] WK-PANDA-30 熊猫团子 30cm
+    [41/74] WK-PANDA-50 熊猫团子 50cm
+
+[WK-PANDAK] 1 个 SKU，需要 4 张  ← 检索: panda plush keychain
+    候选: 65 张
+    下载可用: 10 张
+    [42/74] WK-PANDAK-12 熊猫团子挂件 12cm
+
+[WK-PANDAP] 1 个 SKU，需要 4 张  ← 检索: panda pillow cushion
+    候选: 66 张
+    下载可用: 10 张
+    [43/74] WK-PANDAP-45 熊猫团子抱枕 45cm
+
+[WK-PENGUIN] 2 个 SKU，需要 8 张  ← 检索: plush penguin stuffed animal
+    候选: 71 张
+    下载可用: 14 张
+    [44/74] WK-PENGUIN-25 布丁企鹅 25cm
+    [45/74] WK-PENGUIN-35 布丁企鹅 35cm
+
+[WK-PENGUINK] 1 个 SKU，需要 4 张  ← 检索: penguin plush keychain
+    候选: 62 张
+    下载可用: 10 张
+    [46/74] WK-PENGUINK-10 布丁企鹅挂件 10cm
+
+[WK-PIG] 3 个 SKU，需要 12 张  ← 检索: plush pig stuffed animal
+    候选: 71 张
+    下载可用: 18 张
+    [47/74] WK-PIG-20 草莓猪 20cm
+    [48/74] WK-PIG-30 草莓猪 30cm
+    [49/74] WK-PIG-40 草莓猪 40cm
+
+[WK-PIGK] 1 个 SKU，需要 4 张  ← 检索: pig plush keychain
+    候选: 62 张
+    下载可用: 10 张
+    [50/74] WK-PIGK-10 草莓猪挂件 10cm
+
+[WK-POLARBEAR] 2 个 SKU，需要 8 张  ← 检索: polar bear plush toy
+    候选: 87 张
+    下载可用: 14 张
+    [51/74] WK-POLARBEAR-30 北极熊白白 30cm
+    [52/74] WK-POLARBEAR-45 北极熊白白 45cm
+
+[WK-RABBIT] 4 个 SKU，需要 16 张  ← 检索: plush bunny rabbit stuffed animal
+    候选: 72 张
+    下载可用: 22 张
+    [53/74] WK-RABBIT-20 云朵兔子 20cm
+    [54/74] WK-RABBIT-30 云朵兔子 30cm
+    [55/74] WK-RABBIT-40 云朵兔子 40cm
+    [56/74] WK-RABBIT-50 云朵兔子 50cm
+
+[WK-RABBITK] 2 个 SKU，需要 8 张  ← 检索: bunny keychain plush charm
+    候选: 65 张
+    下载可用: 14 张
+    [57/74] WK-RABBITK-10 云朵兔子挂件 10cm
+    [58/74] WK-RABBITK-15 云朵兔子挂件 15cm
+
+[WK-RABBITP] 2 个 SKU，需要 8 张  ← 检索: bunny pillow cushion
+    候选: 61 张
+    下载可用: 14 张
+    [59/74] WK-RABBITP-40 云朵兔子抱枕 40cm
+    [60/74] WK-RABBITP-50 云朵兔子抱枕 50cm
+
+[WK-ROCKPENGUIN] 1 个 SKU，需要 4 张  ← 检索: penguin figurine toy
+    候选: 62 张
+    下载可用: 10 张
+    [61/74] WK-ROCKPENGUIN-20 摇滚企鹅搪胶 20cm
+
+[WK-SHEEP] 1 个 SKU，需要 4 张  ← 检索: sheep lamb plush toy
+    候选: 76 张
+    下载可用: 10 张
+    [62/74] WK-SHEEP-30 小羊咩咩 30cm
+
+[WK-SHIBA] 3 个 SKU，需要 12 张  ← 检索: shiba inu plush toy
+    候选: 78 张
+    下载可用: 18 张
+    [63/74] WK-SHIBA-25 柴犬豆豆 25cm
+    [64/74] WK-SHIBA-35 柴犬豆豆 35cm
+    [65/74] WK-SHIBA-45 柴犬豆豆 45cm
+
+[WK-SHIBAK] 2 个 SKU，需要 8 张  ← 检索: shiba plush keychain
+    候选: 59 张
+    下载可用: 14 张
+    [66/74] WK-SHIBAK-10 柴犬豆豆挂件 10cm
+    [67/74] WK-SHIBAK-15 柴犬豆豆挂件 15cm
+
+[WK-SHIBAP] 1 个 SKU，需要 4 张  ← 检索: shiba pillow cushion
+    候选: 59 张
+    下载可用: 10 张
+    [68/74] WK-SHIBAP-50 柴犬豆豆抱枕 50cm
+
+[WK-SLOTH] 1 个 SKU，需要 4 张  ← 检索: sloth plush toy
+    候选: 66 张
+    下载可用: 10 张
+    [69/74] WK-SLOTH-40 树懒慢慢 40cm
+
+[WK-SPACECAT] 1 个 SKU，需要 4 张  ← 检索: space cat figure toy
+    候选: 47 张
+    下载可用: 10 张
+    [70/74] WK-SPACECAT-22 宇宙猫搪胶 22cm
+
+[WK-STAR] 1 个 SKU，需要 4 张  ← 检索: plush star toy
+    候选: 62 张
+    下载可用: 10 张
+    [71/74] WK-STAR-12 星星月亮挂件 12cm
+
+[WK-STARBEAR] 1 个 SKU，需要 4 张  ← 检索: astronaut bear figure toy
+    候选: 89 张
+    下载可用: 10 张
+    [72/74] WK-STARBEAR-18 星际小熊搪胶 18cm
+
+[WK-TRENDBEAR] 1 个 SKU，需要 4 张  ← 检索: designer bear art toy figure
+    候选: 61 张
+    下载可用: 10 张
+    [73/74] WK-TRENDBEAR-25 潮流熊搪胶 25cm
+
+[WK-UNICORN] 1 个 SKU，需要 4 张  ← 检索: unicorn plush toy
+    候选: 78 张
+    下载可用: 10 张
+    [74/74] WK-UNICORN-35 独角兽星愿 35cm
+
+==================================================================
+图片总数: 296 ；SKU 数: 74
+复用补充: 0 张
+类目目录: ['抱枕', '挂件', '搪胶潮玩', '毛绒玩偶', '盲盒']
+索引: D:\learn\homework\agent\商家材料包\data\商品图片索引.csv
+署名: D:\learn\homework\agent\商家材料包\data\商品图片来源与署名.csv 共 295 个来源

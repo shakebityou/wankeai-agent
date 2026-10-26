@@ -1,0 +1,350 @@
+# ==============================================================================
+# 玩可爱智能客服 Agent · 后端全套编排（任务书 3.1 技术栈锁定）
+# ------------------------------------------------------------------------------
+# 起停：
+#   docker compose --profile core up -d              # 必需组件（PG/Redis/Milvus/ES/App）
+#   docker compose --profile core --profile obs up -d # 再加 Prometheus/Grafana/Loki
+#   docker compose down -v                            # 连数据卷一起清
+#
+# 镜像源：国内直连 docker.io 常受限，改 .env 里的 REGISTRY_MIRROR。
+#   注意分三层，别混：REGISTRY_MIRROR 只给 docker.io 的镜像加前缀；
+#   quay.io / docker.elastic.co / MinIO 走各自的 ETCD_IMAGE / ES_IMAGE / MINIO_IMAGE；
+#   构建期 apt/pip 源走 APT_MIRROR / PIP_INDEX_URL（见 backend/Dockerfile）。
+#   出海或能直连官方仓库时，把这些变量改回官方地址即可（默认值是国内可用地址）。
+#   ⚠️ 若宿主机开了系统代理，镜像站会因判定「非大陆 IP」返回 403
+#      （实测 docker.1panel.live 直连 200 / 走代理 403）。给 Docker Desktop
+#      配置 no-proxy 或临时关代理再拉。
+#
+# 宿主机端口刻意错开本机已有服务：本机已有 Redis 6379 与 SQL Server 1433，
+# 因此 compose 里 Redis 映射到 6380、PG 到 5433、Milvus 到 19531、ES 到 9201。
+# ==============================================================================
+
+name: wkagent
+
+x-restart: &restart
+  restart: unless-stopped
+
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  # ----------------------------------------------------------------------------
+  # 应用（模块化单体，FastAPI + Gunicorn/Uvicorn worker）
+  # ----------------------------------------------------------------------------
+  app:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # 基础镜像：跟随 REGISTRY_MIRROR（默认 docker.io）
+        PYTHON_IMAGE: ${REGISTRY_MIRROR:-docker.io}/library/python:3.11-slim
+        # 国内构建把这两个指向镜像站，官方源在部分网络不可达
+        APT_MIRROR: ${APT_MIRROR:-}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.org/simple}
+    image: wkagent-backend:1.0.0
+    container_name: wkagent-app
+    env_file:
+      - .env
+    environment:
+      WK_ENV: ${WK_ENV:-dev}
+      # db_backend=auto 时只有 prod 才用 postgres，dev 会退回 SQLite；
+      # 容器里起了 postgres 就必须显式指定，否则数据全落本地文件。
+      WK_DB_BACKEND: ${WK_DB_BACKEND:-postgres}
+      WK_POSTGRES_DSN: postgresql+psycopg2://${POSTGRES_USER:-wkagent}:${POSTGRES_PASSWORD:-wkagent}@postgres:5432/${POSTGRES_DB:-wkagent}
+      WK_REDIS_URL: redis://redis:6379/0
+      WK_MILVUS_HOST: milvus
+      WK_MILVUS_PORT: "19530"
+      WK_ES_URL: http://elasticsearch:9200
+      WK_MERCHANT_PACKAGE_DIR: /data/商家材料包
+      # 本地适配器落盘目录：容器里 /app 是 backend/ 的挂载点，默认值
+      # REPO_ROOT/"backend"/".local" 会算成 /app/backend/.local（多一层），
+      # 这里显式钉到 /app/.local —— 它已挂载到宿主机 backend/.local。
+      WK_LOCAL_DB_PATH: /app/.local/wkagent.db
+      WK_LOCAL_INDEX_DIR: /app/.local/index
+      WK_LOCAL_MEDIA_DIR: /app/.local/media
+    volumes:
+      - ./:/app
+      - ./.local:/app/.local
+      # 商家材料包（只读挂载，导入脚本读取 CSV/图片）
+      - ../商家材料包:/data/商家材料包:ro
+    ports:
+      - "${HOST_APP_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+  # ----------------------------------------------------------------------------
+  # 前端（Vue 3 构建产物 + Nginx 托管，同源反代 /bff/ 到 app）
+  # 任务书 4.1：静态资源由 Nginx 托管，前端只调 /bff/v1/*（HC-1 零外链）。
+  # 构建上下文是 ../frontend，镜像内多阶段 `npm ci && vite build`，不依赖宿主机 dist。
+  # ----------------------------------------------------------------------------
+  web:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        NODE_IMAGE: ${REGISTRY_MIRROR:-docker.io}/library/node:24-alpine
+        NGINX_IMAGE: ${REGISTRY_MIRROR:-docker.io}/library/nginx:1.27-alpine
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmmirror.com}
+    image: wkagent-frontend:1.0.0
+    container_name: wkagent-web
+    ports:
+      - "${HOST_WEB_PORT:-8080}:80"
+    depends_on:
+      app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ----------------------------------------------------------------------------
+  # PostgreSQL 14（会话、工单、配置、知识块主数据）
+  # 选 PG 不选 MySQL：JSONB + tsvector 全文检索
+  # ----------------------------------------------------------------------------
+  postgres:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    image: ${REGISTRY_MIRROR:-docker.io}/library/postgres:14-alpine
+    container_name: wkagent-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-wkagent}
+      POSTGRES_USER: ${POSTGRES_USER:-wkagent}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wkagent}
+      # 中文排序 + UTF8
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+      TZ: Asia/Shanghai
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "${HOST_POSTGRES_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wkagent} -d ${POSTGRES_DB:-wkagent}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    command:
+      - postgres
+      # 中文全文检索需要 zhparser/pg_jieba 扩展；官方镜像未内置，
+      # 一期用应用层 BM25（ES 或本地 Bm25SparseIndex）承担稀疏路，
+      # tsvector 仅作降级兜底（见 BE-05 降级说明）。
+      - -c
+      - max_connections=200
+      - -c
+      - shared_buffers=256MB
+
+  # ----------------------------------------------------------------------------
+  # Redis 7（会话状态 / Nonce 去重 / 幂等键 / 限流计数 / 工单本地队列）
+  # ----------------------------------------------------------------------------
+  redis:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    image: ${REGISTRY_MIRROR:-docker.io}/library/redis:7-alpine
+    container_name: wkagent-redis
+    command:
+      - redis-server
+      # 幂等键与 Nonce 必须持久化，避免重启后重复处理回调
+      - --appendonly
+      - "yes"
+      - --appendfsync
+      - everysec
+      - --maxmemory
+      - 512mb
+      - --maxmemory-policy
+      - noeviction
+    volumes:
+      - redis-data:/data
+    ports:
+      - "${HOST_REDIS_PORT:-6380}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # ----------------------------------------------------------------------------
+  # Milvus 2.4 Standalone（向量库，1024 维，元数据过滤）
+  # 依赖 etcd（元数据）+ minio（对象存储）
+  # ----------------------------------------------------------------------------
+  etcd:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    # quay.io 不是 docker.io 上的仓库，不能加 REGISTRY_MIRROR 前缀
+    # （加了会拼成 docker.io/quay.io/... 这种不存在的地址，拉取必然失败）
+    # 按 DaoCloud public-image-mirror 的前缀替换规则：quay.io -> quay.m.daocloud.io
+    # 可直连 quay.io 的环境用 ETCD_IMAGE=quay.io/coreos/etcd:v3.5.14 覆盖即可
+    image: ${ETCD_IMAGE:-quay.m.daocloud.io/coreos/etcd:v3.5.14}
+    container_name: wkagent-etcd
+    environment:
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: "1000"
+      ETCD_QUOTA_BACKEND_BYTES: "4294967296"
+      ETCD_SNAPSHOT_COUNT: "50000"
+    volumes:
+      - etcd-data:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  minio:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    # MinIO 官方镜像已从 Docker Hub 下架（`minio/minio` 所有 tag 均 404），
+    # 这里用社区仍在持续发布的同名镜像 `pgsty/minio`（tag 形态一致）。
+    # 只用到 S3 API（9000），Milvus 不关心镜像出处。
+    # 企业内网有自建镜像仓时用 MINIO_IMAGE=<repo>/minio:RELEASE.x 覆盖。
+    image: ${MINIO_IMAGE:-docker.1ms.run/pgsty/minio:RELEASE.2026-08-04T00-00-00Z}
+    container_name: wkagent-minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    volumes:
+      - minio-data:/minio_data
+    command: minio server /minio_data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    image: ${REGISTRY_MIRROR:-docker.io}/milvusdb/milvus:v2.4.15
+    container_name: wkagent-milvus
+    command: ["milvus", "run", "standalone"]
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+      TZ: Asia/Shanghai
+    volumes:
+      - milvus-data:/var/lib/milvus
+    ports:
+      - "${HOST_MILVUS_PORT:-19531}:19530"
+    depends_on:
+      etcd:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # Elasticsearch 8（BM25 稀疏路召回）
+  # 退化为 PG tsvector 会降召回质量，因此一期保留 ES。
+  # ⚠️ ES 是内存大户，本机 16GB 内存跑全套偏紧，单机开发建议 ES_JAVA_OPTS 调小。
+  # ----------------------------------------------------------------------------
+  elasticsearch:
+    profiles: ["core"]
+    <<: [*restart, *logging]
+    # docker.elastic.co 不是 docker.io 上的仓库，同样不能加前缀
+    # 按 DaoCloud 前缀替换规则：docker.elastic.co -> elastic.m.daocloud.io
+    # 可直连 docker.elastic.co 的环境用 ES_IMAGE=docker.elastic.co/elasticsearch/elasticsearch:8.13.4 覆盖
+    image: ${ES_IMAGE:-elastic.m.daocloud.io/elasticsearch/elasticsearch:8.13.4}
+    container_name: wkagent-es
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      xpack.security.http.ssl.enabled: "false"
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms512m -Xmx512m}
+      bootstrap.memory_lock: "true"
+      TZ: Asia/Shanghai
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - "${HOST_ES_PORT:-9201}:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  # ----------------------------------------------------------------------------
+  # 可观测性（可选：--profile obs）
+  # 任务书 3.1：OpenTelemetry + Prometheus + Grafana + Loki
+  # ----------------------------------------------------------------------------
+  prometheus:
+    profiles: ["obs"]
+    <<: [*restart, *logging]
+    image: ${REGISTRY_MIRROR:-docker.io}/prom/prometheus:v2.53.0
+    container_name: wkagent-prometheus
+    volumes:
+      - ./deploy/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./deploy/prometheus/rules:/etc/prometheus/rules:ro
+      - prom-data:/prometheus
+    ports:
+      - "9090:9090"
+
+  grafana:
+    profiles: ["obs"]
+    <<: [*restart, *logging]
+    image: ${REGISTRY_MIRROR:-docker.io}/grafana/grafana:11.1.0
+    container_name: wkagent-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./deploy/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  loki:
+    profiles: ["obs"]
+    <<: [*restart, *logging]
+    image: ${REGISTRY_MIRROR:-docker.io}/grafana/loki:3.1.0
+    container_name: wkagent-loki
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./deploy/loki/local-config.yaml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    ports:
+      - "3100:3100"
+
+volumes:
+  pg-data:
+  redis-data:
+  etcd-data:
+  minio-data:
+  milvus-data:
+  es-data:
+  prom-data:
+  grafana-data:
+  loki-data:

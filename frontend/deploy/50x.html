@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>服务暂时不可用 · 玩可爱智能客服</title>
+    <style>
+      html, body { height: 100%; margin: 0; }
+      body {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 12px; font-family: system-ui, -apple-system, "Microsoft YaHei", sans-serif;
+        background: #f7f5f2; color: #2b2b2b; text-align: center; padding: 24px;
+      }
+      .code { font-size: 56px; font-weight: 700; color: #d8d2cb; letter-spacing: 4px; }
+      .title { font-size: 18px; font-weight: 600; }
+      .desc { font-size: 13px; color: #6b6b6b; max-width: 420px; line-height: 1.7; }
+      button {
+        margin-top: 8px; padding: 8px 20px; border-radius: 8px; cursor: pointer;
+        border: 1px solid #d8d2cb; background: #fff; font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="code">503</div>
+    <div class="title">服务暂时不可用</div>
+    <div class="desc">
+      后台服务正在重启或暂时过载，请稍后刷新重试。<br />
+      若长时间无法访问，请联系系统管理员。
+    </div>
+    <button onclick="location.reload()">刷新重试</button>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+# ==============================================================================
+# Grafana 数据源自动配置（任务书 3.1：Prometheus + Loki）
+# ------------------------------------------------------------------------------
+# 容器启动时自动注册两个数据源，无需人工在 UI 里点：
+#   Prometheus (default) → http://prometheus:9090
+#   Loki                 → http://loki:3100
+#
+# 坐席台/运营后台的 12 项指标看板（FE-09）直接查询 Prometheus。
+# ==============================================================================
+
+apiVersion: 1
+
+deleteDatasources:
+  - name: Prometheus
+    orgId: 1
+  - name: Loki
+    orgId: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    orgId: 1
+    uid: wkagent-prometheus
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: 15s
+      httpMethod: POST
+
+  - name: Loki
+    type: loki
+    access: proxy
+    orgId: 1
+    uid: wkagent-loki
+    url: http://loki:3100
+    editable: false
+    jsonData:
+      maxLines: 1000
+      # 日志里的 trace_id 可直接跳转（与 TraceMiddleware 写入的字段名一致）
+      derivedFields:
+        - name: TraceID
+          matcherRegex: '"trace_id"\s*:\s*"([^"]+)"'
+          datasourceUid: wkagent-prometheus
+          url: /explore?left={"datasource":"wkagent-prometheus"}

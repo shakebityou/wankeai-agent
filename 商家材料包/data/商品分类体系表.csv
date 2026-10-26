@@ -1,0 +1,7 @@
+﻿一级类目,二级类目,三级类目,SKU 编码前缀,覆盖 SKU 数,示例 SKU,对应项目文档知识分类,知识库切分单元,备注
+毛绒玩具,毛绒玩偶,坐姿玩偶,WK-BEAR/WK-RABBIT/WK-DINO/WK-PIG/WK-PENGUIN 等,31,WK-BEAR-20、WK-BEAR-30、WK-BEAR-40,商品知识,一款一单元（200–400 字）,核心品类，占 SKU 总数约 42%
+毛绒玩具,毛绒玩偶,小尺寸玩偶,WK-*-20/WK-*-25/WK-*-30,0,见毛绒玩偶类目,商品知识,一款一单元（200–400 字）,20–30cm 段，属二级细分，不单独计 SKU
+毛绒玩具,毛绒抱枕,抱枕,WK-BEARP/WK-RABBITP/WK-DINOP/WK-CATP 等,10,WK-BEARP-40、WK-BEARP-50、WK-CATP-40,商品知识,一款一单元（200–400 字）,40–55cm，兼具玩偶与家纺属性
+毛绒玩具,毛绒挂件,挂件/钥匙扣,WK-*-K/WK-OCTO/WK-BURGER/WK-STAR 等,15,WK-BEARK-10、WK-BEARK-15、WK-BURGER-10,商品知识,一款一单元（200–400 字）,8–15cm，配件属性，价格带最低
+潮玩,搪胶潮玩,搪胶摆件,WK-STARBEAR/WK-MECHRAB/WK-TRENDBEAR 等,10,WK-ASTROABBIT-26、WK-CYBERSHIBA-24、WK-DEEPSEAOCTO-21,商品知识,一款一单元（200–400 字）,材质为 Vinyl，实心，洗护口径为「表面擦拭」
+潮玩,盲盒,盲盒单盒/端盒,WK-BLIND*-S / WK-BLIND*-C,8,WK-BLINDDESSERT-C、WK-BLINDDESSERT-S、WK-BLINDFOREST-C,商品知识 + 售后政策,一款一单元（200–400 字）,售后退换需特别标注「已拆封不可退」边界

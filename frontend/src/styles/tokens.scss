@@ -1,0 +1,101 @@
+// ─────────────────────────────────────────────────────────────
+// 玩可爱智能客服 · 设计令牌（Design Tokens）
+//
+// 视觉定位：温暖、亲和、可信赖的「毛绒玩偶」品牌气质，
+// 但坐席工作台是长时间注视的高密度信息界面，因此：
+//   1. 主色只用于品牌与交互反馈，正文一律用中性墨色保证可读性；
+//   2. 背景用暖米白而非纯白，降低长时间盯屏的刺眼感；
+//   3. 三态（达标/预警/未达标）用固定语义色，不随主题漂移。
+// 对比度：primary-ink 与 surface 的对比度 ≥ 4.5:1（WCAG AA 正文标准）。
+// ─────────────────────────────────────────────────────────────
+
+// 品牌色 —— 珊瑚橙（毛绒玩偶的暖感）
+$brand-50: #fff4f0;
+$brand-100: #ffe3d9;
+$brand-200: #ffc7b4;
+$brand-300: #ffa387;
+$brand-400: #fb7d59;
+$brand-500: #f2653f; // 主色：填充、激活态、品牌标识
+$brand-600: #d9502c; // 悬停
+$brand-700: #b23f21; // 按下
+$brand-800: #8a2f18;
+$brand-900: #5f2010;
+$brand-ink: #b23f21; // 白底上的品牌色文字（对比度 5.1:1）
+
+// 中性墨色 —— 暖调灰
+$ink-900: #23262e;
+$ink-800: #333842;
+$ink-700: #454b57;
+$ink-600: #5a6070; // 次级正文
+$ink-500: #767c8c; // 辅助说明
+$ink-400: #9aa0ae;
+$ink-300: #c2c6d0;
+$ink-200: #e2e0dc; // 边框
+$ink-150: #ece9e4; // 分隔线
+$ink-100: #f2f0ec; // 次级底色
+$ink-50: #f7f5f2; // 页面底色（暖米白）
+$surface: #ffffff;
+$surface-sunken: #faf9f7;
+
+// 语义色 —— 固定语义，不随品牌漂移
+$success-500: #2f9e6e;
+$success-bg: #e8f6ef;
+$success-ink: #1e6f4c;
+
+$warning-500: #e0952a;
+$warning-bg: #fdf3e2;
+$warning-ink: #9a6412;
+
+$danger-500: #d94a4a;
+$danger-bg: #fdecec;
+$danger-ink: #9e2b2b;
+
+$info-500: #4a7fd9;
+$info-bg: #ecf2fd;
+$info-ink: #2b5aa8;
+
+$mint-500: #3e8e7e; // 品牌辅助色：用于「机器人/知识」类标识
+$mint-bg: #e9f5f2;
+$mint-ink: #26685a;
+
+// 圆角 / 阴影 / 间距
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 14px;
+$radius-xl: 20px;
+$radius-pill: 999px;
+
+$shadow-xs: 0 1px 2px rgba(35, 38, 46, 0.05);
+$shadow-sm: 0 2px 8px rgba(35, 38, 46, 0.06);
+$shadow-md: 0 6px 20px rgba(35, 38, 46, 0.08);
+$shadow-lg: 0 16px 40px rgba(35, 38, 46, 0.12);
+
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 20px;
+$space-6: 24px;
+$space-8: 32px;
+$space-10: 40px;
+$space-12: 48px;
+
+// 字体
+$font-sans: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Noto Sans SC', system-ui,
+  -apple-system, 'Segoe UI', sans-serif;
+$font-mono: 'JetBrains Mono', 'Cascadia Code', 'SF Mono', Consolas, monospace;
+
+$text-xs: 12px;
+$text-sm: 13px;
+$text-base: 14px;
+$text-md: 15px;
+$text-lg: 17px;
+$text-xl: 20px;
+$text-2xl: 24px;
+$text-3xl: 30px;
+
+// 布局尺寸
+$rail-width: 60px;
+$sidebar-width: 216px;
+$topbar-height: 56px;

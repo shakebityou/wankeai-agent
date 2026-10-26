@@ -1,0 +1,31 @@
+{
+  "format": "xlsx",
+  "verdict": "pass",
+  "checks": [
+    {
+      "id": "package",
+      "status": "pass"
+    },
+    {
+      "id": "count",
+      "status": "pass",
+      "expected": 2,
+      "actual": 2
+    }
+  ],
+  "summary": {
+    "sheets": [
+      {
+        "name": "\u5bf9\u8bdd\u8bed\u6599",
+        "cells": 1815,
+        "formulas": 0
+      },
+      {
+        "name": "\u5bf9\u8bdd\u6c47\u603b",
+        "cells": 198,
+        "formulas": 0
+      }
+    ],
+    "formulas_evaluated": false
+  }
+}

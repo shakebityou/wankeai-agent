@@ -1,0 +1,130 @@
+# ==============================================================================
+# Prometheus 告警规则（任务书 6.4 验收指标 + 6.5 上线检查）
+# ------------------------------------------------------------------------------
+# 分级：
+#   P0（critical）→ 立即电话/群告警，违反合规红线或可用性
+#   P1（warning） → 值班群告警，指标逼近验收阈值
+#
+# 阈值来源（任务书 6.4）：
+#   M-03 无依据拒答率 100%   → 一旦出现「有依据却拒答」或反之即告警
+#   M-07 首响 P95 ≤ 2s
+#   M-10 转接成功率 ≥ 99.5%
+#   M-12 可用性 ≥ 99.9%
+#   合规 8 项一票否决         → 外链零输出、日志零敏感字段
+# ==============================================================================
+
+groups:
+  - name: wkagent-compliance
+    interval: 30s
+    rules:
+      # HC-1 外链零输出：合规闸拦截即说明生成侧出了问题，必须查
+      - alert: ComplianceBlocked
+        expr: increase(wk_compliance_blocked_total[10m]) > 0
+        for: 0m
+        labels:
+          severity: P0
+          category: compliance
+        annotations:
+          summary: "出站内容被合规闸拦截（HC-1 风险）"
+          description: "10 分钟内拦截 {{ $value }} 次，检查 LLM 生成侧是否输出了外链或跳转话术。"
+
+      # 消息发送失败（BE-02 DoD：成功率 ≥ 99.9%）
+      - alert: OutboundSendFailureRate
+        expr: |
+          sum(rate(wk_outbound_sends_total{ok="false"}[5m]))
+            / clamp_min(sum(rate(wk_outbound_sends_total[5m])), 1) > 0.001
+        for: 5m
+        labels:
+          severity: P1
+          category: availability
+        annotations:
+          summary: "消息发送失败率 > 0.1%（低于 99.9% DoD）"
+          description: "5 分钟失败率 {{ $value | humanizePercentage }}。"
+
+  - name: wkagent-availability
+    interval: 30s
+    rules:
+      # M-12 可用性 ≥ 99.9%
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(wk_http_requests_total{status=~"5.."}[5m]))
+            / clamp_min(sum(rate(wk_http_requests_total[5m])), 1) > 0.01
+        for: 5m
+        labels:
+          severity: P0
+          category: availability
+        annotations:
+          summary: "5xx 比例 > 1%"
+          description: "5 分钟 5xx 占比 {{ $value | humanizePercentage }}，M-12 可用性 ≥ 99.9% 面临风险。"
+
+      # M-07 首响 P95 ≤ 2s（用 HTTP 延迟近似，chat/turn 路由）
+      - alert: ChatTurnLatencyHigh
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum(rate(wk_http_request_duration_seconds_bucket{path="/internal/v1/chat/turn"}[5m])) by (le)
+          ) > 2
+        for: 5m
+        labels:
+          severity: P1
+          category: latency
+        annotations:
+          summary: "对话接口 P95 > 2s（M-07 首响 P95 ≤ 2s）"
+          description: "当前 P95 = {{ $value }}s，检查 LLM 与 RAG 耗时。"
+
+      # BE-05 DoD：RAG 检索 P95 ≤ 200ms
+      - alert: RagRetrievalLatencyHigh
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum(rate(wk_rag_retrieval_duration_seconds_bucket[5m])) by (le)
+          ) > 0.2
+        for: 5m
+        labels:
+          severity: P1
+          category: latency
+        annotations:
+          summary: "RAG 检索 P95 > 200ms（BE-05 DoD）"
+          description: "当前 P95 = {{ $value }}s。"
+
+  - name: wkagent-dependencies
+    interval: 30s
+    rules:
+      # 熔断器打开（BE-18 DoD：熔断 30 秒开启）
+      - alert: CircuitBreakerOpen
+        expr: wk_circuit_breaker_open == 1
+        for: 1m
+        labels:
+          severity: P1
+          category: dependency
+        annotations:
+          summary: "熔断器 {{ $labels.name }} 已打开"
+          description: "下游 {{ $labels.name }} 连续失败，已熔断 30 秒。"
+
+      # 限流频繁触发 → 说明上游调用量超商家配额
+      - alert: RateLimitFrequent
+        expr: increase(wk_rate_limit_rejected_total[10m]) > 20
+        for: 5m
+        labels:
+          severity: P1
+          category: dependency
+        annotations:
+          summary: "限流触发频繁（{{ $labels.endpoint }}）"
+          description: "10 分钟被限流 {{ $value }} 次，核对商家 QPS 配额与调用方退避策略。"
+
+  - name: wkagent-cost
+    interval: 60s
+    rules:
+      # 月度模型调用 ≤ 10000 元（任务书 3.1 预算）
+      # 按 qwen-plus 约 0.02 元/千 token 粗估，日消耗超 250 元（月 7500 元）预警
+      - alert: LlmDailyCostHigh
+        expr: |
+          increase(wk_llm_tokens_total[24h])
+            * on(provider) group_left() (0.02 / 1000) > 250
+        for: 10m
+        labels:
+          severity: P1
+          category: cost
+        annotations:
+          summary: "LLM 日消耗逼近月度预算（{{ $labels.provider }}）"
+          description: "24 小时消耗约 {{ $value }} 元，月度预算 10000 元。"
